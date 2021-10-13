@@ -1,10 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Home from './Home';
+import { Homepage } from './pages/homepage/Homepage';
+import { DefaultLayout } from './layouts/DefaultLayout';
+import './index.css'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Home />
+    <DefaultLayout>
+      <Homepage />
+    </DefaultLayout>
   </React.StrictMode>,
   document.getElementById('root')
 );
