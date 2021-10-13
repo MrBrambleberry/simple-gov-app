@@ -16,3 +16,12 @@ code {
 .wrapper {
   min-height: 70vh;
 }
+
+fieldset {
+  max-width: 500px;
+  border:0px;
+}
+
+.form-group{
+  margin-bottom: 20px;
+}
