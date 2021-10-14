@@ -11,6 +11,9 @@
 # production
 /build
 
+# mockDatabase
+db.json
+
 # misc
 .DS_Store
 .env.local
