@@ -2,9 +2,11 @@ import { MyDetails } from './MyDetails'
 import { render, screen } from '@testing-library/react';
 import * as axios from 'axios';
 import { act } from 'react-dom/test-utils';
+import * as copy from './copy';
 
 jest.mock('axios');
 
+const {heading, legend, firstNameLabel, lastNameLabel, ageLabel} = copy.default;
 
 const mockSubject = {
     subject: { firstName: "John", lastName: "Doe", age: 26}
@@ -16,15 +18,14 @@ const mockFetchSubject = results => {
 }
 
 describe('MyDetails', () => {
-
     const renderPage = async () => render(<MyDetails />);
 
     it('renders static content on the page', async () => {
         await renderPage();
 
         [
-            'Your Details',
-            'Please enter your details'
+            heading,
+            legend
         ].forEach(content => {
             expect(screen.getByText(content)).toBeInTheDocument();
         });
@@ -37,8 +38,8 @@ describe('MyDetails', () => {
             await renderPage();
         });
         
-        expect(screen.getByLabelText('First Name')).toHaveValue('John');
-        expect(screen.getByLabelText('Last Name')).toHaveValue('Doe');
-        expect(screen.getByLabelText('Age')).toHaveValue('26');
-    })
+        expect(screen.getByLabelText(firstNameLabel)).toHaveValue('John');
+        expect(screen.getByLabelText(lastNameLabel)).toHaveValue('Doe');
+        expect(screen.getByLabelText(ageLabel)).toHaveValue('26');
+    });
 })

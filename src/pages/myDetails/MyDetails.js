@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { Label, LabelText, Input, Fieldset } from 'govuk-react'
+import * as copy from './copy';
 
+const {heading, legend, firstNameLabel, lastNameLabel, ageLabel} = copy.default;
 
 function MyDetails() {
     const [firstName, setFirstName] = useState("");
@@ -27,14 +29,14 @@ function MyDetails() {
     
     return (
         <div>
-            <h1>Your Details</h1>
+            <h1>{heading}</h1>
 
             <Fieldset>
-                <Fieldset.Legend>Please enter your details</Fieldset.Legend>
+                <Fieldset.Legend>{legend}</Fieldset.Legend>
                 <div className="form-group">
                     <Label>
                         <LabelText>
-                            First Name
+                            {firstNameLabel}
                         </LabelText>
                         <Input name="firstName" defaultValue={firstName}/>
                     </Label>
@@ -43,7 +45,7 @@ function MyDetails() {
                 <div className="form-group">
                     <Label>
                         <LabelText>
-                            Last Name
+                            {lastNameLabel}
                         </LabelText>
                         <Input name="lastName" defaultValue={lastName} />
                     </Label>
@@ -52,7 +54,7 @@ function MyDetails() {
                 <div className="form-group">
                     <Label>
                         <LabelText>
-                            Age
+                            {ageLabel}
                         </LabelText>
                         <Input name="age" defaultValue={age} />
                     </Label>
