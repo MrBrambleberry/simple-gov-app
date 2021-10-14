@@ -3,14 +3,13 @@ import { render, screen } from '@testing-library/react';
 import * as axios from 'axios';
 import { act } from 'react-dom/test-utils';
 import * as copy from './copy';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('axios');
 
 const {heading, legend, firstNameLabel, lastNameLabel, ageLabel} = copy.default;
 
-const mockSubject = {
-    subject: { firstName: "John", lastName: "Doe", age: 26}
-};
+const mockSubject = { firstName: "John", lastName: "Doe", age: 26};
 const mockFetchSubject = results => {
     axios.get.mockImplementation(() => Promise.resolve({
         data: results
@@ -41,5 +40,27 @@ describe('MyDetails', () => {
         expect(screen.getByLabelText(firstNameLabel)).toHaveValue('John');
         expect(screen.getByLabelText(lastNameLabel)).toHaveValue('Doe');
         expect(screen.getByLabelText(ageLabel)).toHaveValue('26');
+    });
+
+    it('Posts data to our local service when we submit the form',async ()=>{
+        await act(async () => {
+            await renderPage();
+        });    
+
+        await act(async () => {
+            userEvent.type(screen.getByLabelText(firstNameLabel),'Francesca');
+            userEvent.type(screen.getByLabelText(lastNameLabel),'Medina');
+            userEvent.type(screen.getByLabelText(ageLabel), '38');
+        });
+
+        await act(async () => {
+            userEvent.click(screen.getByTestId('submit-button'));
+        });
+
+        expect(axios.post).toBeCalledWith('http://localhost:3004/subject',{
+            firstName: 'Francesca',
+            lastName: 'Medina',
+            age: '38'
+        });
     });
 })

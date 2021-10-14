@@ -25,3 +25,7 @@ fieldset {
 .form-group{
   margin-bottom: 20px;
 }
+
+input[type=submit]{
+  width: 75px;
+}
