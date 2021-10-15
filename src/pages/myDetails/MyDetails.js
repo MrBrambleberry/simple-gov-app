@@ -3,9 +3,9 @@ import axios from 'axios';
 import { Input, Fieldset } from 'govuk-react';
 import * as copy from './copy';
 import { FormInput } from '../../components/FormInput';
+import { ErrorSummaryDisplay } from '../../components/ErrorSummaryDisplay';
 
 const { heading, legend, firstNameLabel, lastNameLabel, ageLabel } = copy.default;
-const errors = [];
 
 function MyDetails() {
     const [firstName, setFirstName] = useState("");
@@ -14,6 +14,7 @@ function MyDetails() {
     const [firstNameErrorText, setFirstNameErrorText] = useState("");
     const [lastNameErrorText, setLastNameErrorText] = useState("");
     const [ageErrorText, setAgeErrorText] = useState("");
+    const [errors, setErrors] = useState([]);
 
     useEffect(() => {
         const getSubjectDetails = async () => {
@@ -31,26 +32,25 @@ function MyDetails() {
         getSubjectDetails();
     }, []);
 
-
     const onSubmit = event => {
         event.preventDefault();
         let noErrors = true;
 
         if (firstName.match('[^a-zA-Z]') !== null) {
             setFirstNameErrorText(copy.errors.firstName.invalid);
-            errors.push(firstNameErrorText);
+            errors.push({ targetName: 'firstName', text: copy.errors.firstName.invalid });
             noErrors = false;
         }
 
         if (lastName.match('[^a-zA-Z]') !== null) {
             setLastNameErrorText(copy.errors.lastName.invalid);
-            errors.push(lastNameErrorText);
+            errors.push({ targetName: 'lastName', text: copy.errors.lastName.invalid });
             noErrors = false;
         }
 
         if (age.match('[^0-9]') !== null) {
             setAgeErrorText(copy.errors.age.invalid);
-            errors.push(ageErrorText);
+            errors.push({ targetName: 'age', text: copy.errors.age.invalid });
             noErrors = false;
         }
 
@@ -58,7 +58,7 @@ function MyDetails() {
             setFirstNameErrorText("");
             setLastNameErrorText("");
             setAgeErrorText("");
-
+            setErrors([]);
 
             axios.post('http://localhost:3004/subject', {
                 firstName, lastName, age
@@ -69,6 +69,8 @@ function MyDetails() {
     return (
         <div>
             <h1>{heading}</h1>
+            <ErrorSummaryDisplay errors={errors} />
+
             <form onSubmit={onSubmit}>
                 <Fieldset>
                     <Fieldset.Legend>{legend}</Fieldset.Legend>

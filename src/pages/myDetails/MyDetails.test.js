@@ -84,7 +84,7 @@ describe('MyDetails', () => {
             copy.errors.lastName.invalid,
             copy.errors.age.invalid
         ].forEach(content => {
-            expect(screen.getByText(content)).toBeInTheDocument();
+            expect(screen.getAllByText(content).length).toBe(2);
         })
 
         expect(axios.post).not.toBeCalled();
