@@ -6,3 +6,6 @@ A basic application styled using GDS components
 
 ## Start the app locally
 `npm start`
+
+## Start local server
+`$ json-server --watch db.json --port 3004`
