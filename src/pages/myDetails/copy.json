@@ -6,12 +6,15 @@
     "ageLabel": "Age",
     "errors": {
         "firstName": {
+            "blank" : "Please enter your first name",
             "invalid" : "Your first name can only contain alphabetic charcters with no spaces or symbols"
         },
         "lastName": {
+            "blank" : "Please enter your last name",
             "invalid": "Your last name can only contain alphabetic charcters with no spaces or symbols"
         },
         "age": {
+            "blank" : "Please enter your age",
             "invalid": "Your age provided must only use numeric characters"
         }
     }

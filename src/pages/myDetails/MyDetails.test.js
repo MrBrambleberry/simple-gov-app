@@ -89,4 +89,25 @@ describe('MyDetails', () => {
 
         expect(axios.post).not.toBeCalled();
     });
+
+    it('displays an appropriate error message if fields are left blank', async () => {
+        await act(async () => {
+            await renderPage();
+        });
+
+        await act(async () => {
+            await userEvent.click(screen.getByTestId('submit-button'));
+        });
+
+        [
+            copy.errors.firstName.blank,
+            copy.errors.lastName.blank,
+            copy.errors.age.blank
+        ].forEach(content => {
+            expect(screen.getAllByText(content).length).toBe(2);
+        })
+
+        expect(axios.post).not.toBeCalled();
+
+    })
 })

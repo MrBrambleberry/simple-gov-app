@@ -36,19 +36,31 @@ function MyDetails() {
         event.preventDefault();
         let noErrors = true;
 
-        if (firstName.match('[^a-zA-Z]') !== null) {
+        if (firstName === undefined || firstName === '') {
+            setFirstNameErrorText(copy.errors.firstName.blank);
+            errors.push({ targetName: 'firstName', text: copy.errors.firstName.blank });
+            noErrors = false;
+        } else if (firstName.match('[^a-zA-Z]') !== null) {
             setFirstNameErrorText(copy.errors.firstName.invalid);
             errors.push({ targetName: 'firstName', text: copy.errors.firstName.invalid });
             noErrors = false;
         }
 
-        if (lastName.match('[^a-zA-Z]') !== null) {
+        if (lastName === undefined || lastName === '') {
+            setLastNameErrorText(copy.errors.lastName.blank);
+            errors.push({ targetName: 'lastName', text: copy.errors.lastName.blank });
+            noErrors = false;
+        } else if (lastName.match('[^a-zA-Z]') !== null) {
             setLastNameErrorText(copy.errors.lastName.invalid);
             errors.push({ targetName: 'lastName', text: copy.errors.lastName.invalid });
             noErrors = false;
         }
 
-        if (age.match('[^0-9]') !== null) {
+        if (age === undefined || age === '') {
+            setAgeErrorText(copy.errors.age.blank);
+            errors.push({ targetName: 'age', text: copy.errors.age.blank });
+            noErrors = false;
+        } else if (age.match('[^0-9]') !== null) {
             setAgeErrorText(copy.errors.age.invalid);
             errors.push({ targetName: 'age', text: copy.errors.age.invalid });
             noErrors = false;
