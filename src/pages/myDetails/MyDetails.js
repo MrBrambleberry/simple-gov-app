@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import { Label, LabelText, Input, Fieldset } from 'govuk-react'
+import { Label, LabelText, Input, Fieldset } from 'govuk-react';
 import * as copy from './copy';
+import { FormInput } from '../../components/FormInput';
 
 const {heading, legend, firstNameLabel, lastNameLabel, ageLabel} = copy.default;
 
@@ -42,14 +43,12 @@ function MyDetails() {
             <form onSubmit={onSubmit}>
                 <Fieldset>
                     <Fieldset.Legend>{legend}</Fieldset.Legend>
-                    <div className="form-group">
-                        <Label>
-                            <LabelText>
-                                {firstNameLabel}
-                            </LabelText>
-                            <Input name="firstName" defaultValue={firstName} onChange={e => setFirstName(e.target.value)} />
-                        </Label>
-                    </div>
+                    <FormInput
+                        label={firstNameLabel}
+                        name={"firstName"}
+                        defaultValue={firstName}
+                        setter={setFirstName}
+                    />
                     <div className="form-group">
                         <Label>
                             <LabelText>
