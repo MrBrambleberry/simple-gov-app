@@ -105,9 +105,9 @@ describe('MyDetails', () => {
             copy.errors.age.blank
         ].forEach(content => {
             expect(screen.getAllByText(content).length).toBe(2);
-        })
+        });
 
         expect(axios.post).not.toBeCalled();
 
-    })
+    });
 })

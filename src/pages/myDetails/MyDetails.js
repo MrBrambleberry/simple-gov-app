@@ -32,37 +32,37 @@ function MyDetails() {
         getSubjectDetails();
     }, []);
 
+
+    const addError = (setter, errorText, fieldName) => {
+        setter(errorText);
+        errors.push({ targetName: fieldName, text: errorText });
+    }
+
     const onSubmit = event => {
         event.preventDefault();
         let noErrors = true;
 
         if (firstName === undefined || firstName === '') {
-            setFirstNameErrorText(copy.errors.firstName.blank);
-            errors.push({ targetName: 'firstName', text: copy.errors.firstName.blank });
+            addError(setFirstNameErrorText, copy.errors.firstName.blank, 'firstName');
             noErrors = false;
         } else if (firstName.match('[^a-zA-Z]') !== null) {
-            setFirstNameErrorText(copy.errors.firstName.invalid);
-            errors.push({ targetName: 'firstName', text: copy.errors.firstName.invalid });
+            addError(setFirstNameErrorText, copy.errors.firstName.invalid, 'firstName');
             noErrors = false;
         }
 
         if (lastName === undefined || lastName === '') {
-            setLastNameErrorText(copy.errors.lastName.blank);
-            errors.push({ targetName: 'lastName', text: copy.errors.lastName.blank });
+            addError(setLastNameErrorText, copy.errors.lastName.blank, 'lastName');
             noErrors = false;
         } else if (lastName.match('[^a-zA-Z]') !== null) {
-            setLastNameErrorText(copy.errors.lastName.invalid);
-            errors.push({ targetName: 'lastName', text: copy.errors.lastName.invalid });
+            addError(setLastNameErrorText, copy.errors.lastName.invalid, 'lastName');
             noErrors = false;
         }
 
         if (age === undefined || age === '') {
-            setAgeErrorText(copy.errors.age.blank);
-            errors.push({ targetName: 'age', text: copy.errors.age.blank });
+            addError(setAgeErrorText, copy.errors.age.blank, 'age');
             noErrors = false;
         } else if (age.match('[^0-9]') !== null) {
-            setAgeErrorText(copy.errors.age.invalid);
-            errors.push({ targetName: 'age', text: copy.errors.age.invalid });
+            addError(setAgeErrorText, copy.errors.age.invalid, 'age');
             noErrors = false;
         }
 
