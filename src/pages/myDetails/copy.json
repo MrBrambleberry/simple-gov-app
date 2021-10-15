@@ -3,5 +3,16 @@
     "legend": "Please enter your details",
     "firstNameLabel": "First Name",
     "lastNameLabel": "Last Name",
-    "ageLabel": "Age"
+    "ageLabel": "Age",
+    "errors": {
+        "firstName": {
+            "invalid" : "Your first name can only contain alphabetic charcters with no spaces or symbols"
+        },
+        "lastName": {
+            "invalid": "Your last name can only contain alphabetic charcters with no spaces or symbols"
+        },
+        "age": {
+            "invalid": "Your age provided must only use numeric characters"
+        }
+    }
 }
