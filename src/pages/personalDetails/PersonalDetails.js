@@ -3,10 +3,11 @@ import axios from 'axios';
 import { Input, Fieldset } from 'govuk-react';
 import * as copy from './copy';
 import { FormInput } from '../../components/FormInput';
-
+import { useHistory } from "react-router-dom";
 import { DefaultLayout } from '../../layouts/DefaultLayout';
 
 const { heading, legend, firstNameLabel, lastNameLabel, ageLabel } = copy.default;
+
 
 function PersonalDetails() {
     const [firstName, setFirstName] = useState("");
@@ -16,6 +17,7 @@ function PersonalDetails() {
     const [lastNameErrorText, setLastNameErrorText] = useState("");
     const [ageErrorText, setAgeErrorText] = useState("");
     const [errors, setErrors] = useState([]);
+    const history = useHistory();
 
     useEffect(() => {
         const getPersonalDetails = async () => {
@@ -92,6 +94,9 @@ function PersonalDetails() {
             axios.post('http://localhost:3004/subject', {
                 firstName, lastName, age
             });
+
+
+            history.push('/');
         }
     }
 

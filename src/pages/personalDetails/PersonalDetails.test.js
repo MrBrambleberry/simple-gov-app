@@ -4,6 +4,7 @@ import * as axios from 'axios';
 import { act } from 'react-dom/test-utils';
 import * as copy from './copy';
 import userEvent from '@testing-library/user-event';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 jest.mock('axios');
 
@@ -16,9 +17,16 @@ const mockFetchSubject = results => {
     }));
 }
 
-describe('PersonalDetails', () => {
-    const renderPage = async () => render(<PersonalDetails />);
+const renderPage = async () => render(
+    <Router>
+        <Switch>
+            <Route path="/">
+                <PersonalDetails />
+            </Route>
+        </Switch>
+    </Router>);
 
+describe('PersonalDetails', () => {
     it('renders static content on the page', async () => {
         await renderPage();
 
