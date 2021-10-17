@@ -33,27 +33,22 @@ function MyDetails() {
         getSubjectDetails();
     }, []);
 
-    const isErrorKeyInArray = fieldName => errors.find(error => error.targetName === fieldName);
+    const findElementIndexByFieldname = fieldName => errors.indexOf(errors.find(error => error.targetName === fieldName));
 
     const removeError = (fieldName, setter) => {
-        if (isErrorKeyInArray(fieldName)) {
+        const itemIndex = findElementIndexByFieldname(fieldName);
+        if (itemIndex > -1) {
             setter('');
-            setErrors(errors.filter(error => error.targetName !== fieldName));
+            errors.splice(itemIndex, 1);
         }
     }
 
     const addError = (setter, errorText, fieldName) => {
         setter(errorText);
-        let index;
+        const itemIndex = findElementIndexByFieldname(fieldName);
 
-        for (let i = 0; i < errors.length; i++) {
-            if (errors[i].targetName === fieldName) {
-                index = i;
-            }
-        }
-
-        if (index !== undefined) {
-            errors.splice(index, 1);
+        if (itemIndex > -1) {
+            errors.splice(itemIndex, 1);
         }
 
         errors.push({ targetName: fieldName, text: errorText })
