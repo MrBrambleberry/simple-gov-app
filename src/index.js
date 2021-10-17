@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Homepage } from './pages/homepage/Homepage';
-import { MyDetails } from './pages/myDetails/MyDetails';
+import { MyDetailsRoutes } from './pages/myDetails/MyDetailsRoutes';
 import './index.css'
 import {
   BrowserRouter as Router,
@@ -9,14 +9,11 @@ import {
   Route
 } from "react-router-dom";
 
-
 ReactDOM.render(
   <React.StrictMode>
     <Router>
+      <MyDetailsRoutes />
       <Switch>
-        <Route path="/my-details">
-          <MyDetails />
-        </Route>
         <Route exact path="/">
           <Homepage />
         </Route>

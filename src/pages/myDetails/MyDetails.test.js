@@ -108,6 +108,5 @@ describe('MyDetails', () => {
         });
 
         expect(axios.post).not.toBeCalled();
-
     });
 })
