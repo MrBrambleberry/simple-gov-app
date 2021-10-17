@@ -8,7 +8,7 @@ import { DefaultLayout } from '../../layouts/DefaultLayout';
 
 const { heading, legend, firstNameLabel, lastNameLabel, ageLabel } = copy.default;
 
-function MyDetails() {
+function PersonalDetails() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [age, setAge] = useState("");
@@ -18,7 +18,7 @@ function MyDetails() {
     const [errors, setErrors] = useState([]);
 
     useEffect(() => {
-        const getSubjectDetails = async () => {
+        const getPersonalDetails = async () => {
             const res = await axios.get(`http://localhost:3004/subject`);
 
             if (res) {
@@ -30,7 +30,7 @@ function MyDetails() {
             }
         }
 
-        getSubjectDetails();
+        getPersonalDetails();
     }, []);
 
     const findElementIndexByFieldname = fieldName => errors.indexOf(errors.find(error => error.targetName === fieldName));
@@ -130,4 +130,4 @@ function MyDetails() {
     )
 }
 
-export { MyDetails }
+export { PersonalDetails }

@@ -1,4 +1,4 @@
-import { MyDetails } from './MyDetails'
+import { PersonalDetails } from './PersonalDetails'
 import { render, screen } from '@testing-library/react';
 import * as axios from 'axios';
 import { act } from 'react-dom/test-utils';
@@ -16,8 +16,8 @@ const mockFetchSubject = results => {
     }));
 }
 
-describe('MyDetails', () => {
-    const renderPage = async () => render(<MyDetails />);
+describe('PersonalDetails', () => {
+    const renderPage = async () => render(<PersonalDetails />);
 
     it('renders static content on the page', async () => {
         await renderPage();
