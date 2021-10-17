@@ -4,6 +4,7 @@ import { Input, Fieldset } from 'govuk-react';
 import * as copy from './copy';
 import { FormInput } from '../../components/FormInput';
 import { ErrorSummaryDisplay } from '../../components/ErrorSummaryDisplay';
+import { DefaultLayout } from '../../layouts/DefaultLayout';
 
 const { heading, legend, firstNameLabel, lastNameLabel, ageLabel } = copy.default;
 
@@ -98,7 +99,7 @@ function MyDetails() {
     }
 
     return (
-        <div>
+        <DefaultLayout>
             <h1>{heading}</h1>
             <ErrorSummaryDisplay errors={errors} />
 
@@ -131,7 +132,7 @@ function MyDetails() {
                     </div>
                 </Fieldset>
             </form>
-        </div>
+        </DefaultLayout>
     )
 }
 
