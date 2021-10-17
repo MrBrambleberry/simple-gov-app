@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Input, Fieldset } from 'govuk-react';
 import * as copy from './copy';
 import { FormInput } from '../../components/FormInput';
-import { ErrorSummaryDisplay } from '../../components/ErrorSummaryDisplay';
+
 import { DefaultLayout } from '../../layouts/DefaultLayout';
 
 const { heading, legend, firstNameLabel, lastNameLabel, ageLabel } = copy.default;
@@ -96,9 +96,7 @@ function MyDetails() {
     }
 
     return (
-        <DefaultLayout heading={heading}>
-            <ErrorSummaryDisplay errors={errors} />
-
+        <DefaultLayout heading={heading} errors={errors}>
             <form onSubmit={onSubmit}>
                 <Fieldset>
                     <Fieldset.Legend>{legend}</Fieldset.Legend>
