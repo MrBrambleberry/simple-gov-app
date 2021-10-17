@@ -35,22 +35,15 @@ function MyDetails() {
 
     const findElementIndexByFieldname = fieldName => errors.indexOf(errors.find(error => error.targetName === fieldName));
 
-    const removeError = (fieldName, setter) => {
+    const removeError = fieldName => {
         const itemIndex = findElementIndexByFieldname(fieldName);
         if (itemIndex > -1) {
-            setter('');
             errors.splice(itemIndex, 1);
         }
     }
 
-    const addError = (setter, errorText, fieldName) => {
-        setter(errorText);
-        const itemIndex = findElementIndexByFieldname(fieldName);
-
-        if (itemIndex > -1) {
-            errors.splice(itemIndex, 1);
-        }
-
+    const addError = (errorText, fieldName) => {
+        removeError(fieldName);
         errors.push({ targetName: fieldName, text: errorText })
     }
 
@@ -58,27 +51,36 @@ function MyDetails() {
         event.preventDefault();
 
         if (firstName === undefined || firstName === '') {
-            addError(setFirstNameErrorText, copy.errors.firstName.blank, 'firstName');
+            setFirstNameErrorText(copy.errors.firstName.blank);
+            addError(copy.errors.firstName.blank, 'firstName');
         } else if (firstName.match('[^a-zA-Z]') !== null) {
-            addError(setFirstNameErrorText, copy.errors.firstName.invalid, 'firstName');
+            setFirstNameErrorText(copy.errors.firstName.invalid);
+            addError(copy.errors.firstName.invalid, 'firstName');
         } else {
-            removeError('firstName', setFirstNameErrorText);
+            setFirstNameErrorText('')
+            removeError('firstName');
         }
 
         if (lastName === undefined || lastName === '') {
-            addError(setLastNameErrorText, copy.errors.lastName.blank, 'lastName');
+            setLastNameErrorText(copy.errors.lastName.blank)
+            addError(copy.errors.lastName.blank, 'lastName');
         } else if (lastName.match('[^a-zA-Z]') !== null) {
-            addError(setLastNameErrorText, copy.errors.lastName.invalid, 'lastName');
+            setLastNameErrorText(copy.errors.lastName.invalid)
+            addError(copy.errors.lastName.invalid, 'lastName');
         } else {
-            removeError('lastName', setLastNameErrorText);
+            setLastNameErrorText('')
+            removeError('lastName');
         }
 
         if (age === undefined || age === '') {
-            addError(setAgeErrorText, copy.errors.age.blank, 'age');
+            setAgeErrorText(copy.errors.age.blank);
+            addError(copy.errors.age.blank, 'age');
         } else if (age.match('[^0-9]') !== null) {
-            addError(setAgeErrorText, copy.errors.age.invalid, 'age');
+            setAgeErrorText(copy.errors.age.invalid);
+            addError(copy.errors.age.invalid, 'age');
         } else {
-            removeError('age', setAgeErrorText);
+            setAgeErrorText('');
+            removeError('age');
         }
 
         if (errors.length === 0) {
