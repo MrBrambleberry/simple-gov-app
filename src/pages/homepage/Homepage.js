@@ -8,8 +8,7 @@ const { heading, leadParagraph, insetText } = copy.default;
 
 function Homepage() {
   return (
-    <DefaultLayout>
-      <h2>{heading}</h2>
+    <DefaultLayout heading={heading}>
       <LeadParagraph>{leadParagraph}</LeadParagraph>
       <InsetText>{insetText}</InsetText>
       <p>Once you've completed each section below you will be given the chance to review your responses before submitting them</p>

@@ -99,8 +99,7 @@ function MyDetails() {
     }
 
     return (
-        <DefaultLayout>
-            <h1>{heading}</h1>
+        <DefaultLayout heading={heading}>
             <ErrorSummaryDisplay errors={errors} />
 
             <form onSubmit={onSubmit}>
