@@ -32,41 +32,60 @@ function MyDetails() {
         getSubjectDetails();
     }, []);
 
+    const isErrorKeyInArray = fieldName => errors.find(error => error.targetName === fieldName);
+
+    const removeError = (fieldName, setter) => {
+        if (isErrorKeyInArray(fieldName)) {
+            setter('');
+            setErrors(errors.filter(error => error.targetName !== fieldName));
+        }
+    }
 
     const addError = (setter, errorText, fieldName) => {
         setter(errorText);
-        errors.push({ targetName: fieldName, text: errorText });
+        let index;
+
+        for (let i = 0; i < errors.length; i++) {
+            if (errors[i].targetName === fieldName) {
+                index = i;
+            }
+        }
+
+        if (index !== undefined) {
+            errors.splice(index, 1);
+        }
+
+        errors.push({ targetName: fieldName, text: errorText })
     }
 
     const onSubmit = event => {
         event.preventDefault();
-        let noErrors = true;
 
         if (firstName === undefined || firstName === '') {
             addError(setFirstNameErrorText, copy.errors.firstName.blank, 'firstName');
-            noErrors = false;
         } else if (firstName.match('[^a-zA-Z]') !== null) {
             addError(setFirstNameErrorText, copy.errors.firstName.invalid, 'firstName');
-            noErrors = false;
+        } else {
+            removeError('firstName', setFirstNameErrorText);
         }
 
         if (lastName === undefined || lastName === '') {
             addError(setLastNameErrorText, copy.errors.lastName.blank, 'lastName');
-            noErrors = false;
         } else if (lastName.match('[^a-zA-Z]') !== null) {
             addError(setLastNameErrorText, copy.errors.lastName.invalid, 'lastName');
-            noErrors = false;
+        } else {
+            removeError('lastName', setLastNameErrorText);
         }
 
         if (age === undefined || age === '') {
             addError(setAgeErrorText, copy.errors.age.blank, 'age');
-            noErrors = false;
         } else if (age.match('[^0-9]') !== null) {
             addError(setAgeErrorText, copy.errors.age.invalid, 'age');
-            noErrors = false;
+        } else {
+            removeError('age', setAgeErrorText);
         }
 
-        if (noErrors) {
+        if (errors.length === 0) {
             setFirstNameErrorText("");
             setLastNameErrorText("");
             setAgeErrorText("");
