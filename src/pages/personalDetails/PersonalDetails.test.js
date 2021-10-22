@@ -1,4 +1,4 @@
-import { PersonalDetails } from './PersonalDetails'
+import { SubjectDetails } from './PersonalDetailsRoutes'
 import { render, screen } from '@testing-library/react';
 import * as axios from 'axios';
 import { act } from 'react-dom/test-utils';
@@ -21,7 +21,7 @@ const renderPage = async () => render(
     <Router>
         <Switch>
             <Route path="/">
-                <PersonalDetails />
+                <SubjectDetails />
             </Route>
         </Switch>
     </Router>);
