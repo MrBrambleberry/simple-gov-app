@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { Input, Fieldset } from 'govuk-react';
-import * as copy from './copy';
 import { FormInput } from '../../components/FormInput';
 import { useHistory } from "react-router-dom";
 import { DefaultLayout } from '../../layouts/DefaultLayout';
 
-const { heading, legend, firstNameLabel, lastNameLabel, ageLabel } = copy.default;
-
-
-function PersonalDetails() {
+function PersonalDetails(props) {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [age, setAge] = useState("");
@@ -18,6 +14,9 @@ function PersonalDetails() {
     const [ageErrorText, setAgeErrorText] = useState("");
     const [errors, setErrors] = useState([]);
     const history = useHistory();
+
+    const { copy } = props;
+    const { heading, legend, firstNameLabel, lastNameLabel, ageLabel } = copy.default;
 
     useEffect(() => {
         const getPersonalDetails = async () => {

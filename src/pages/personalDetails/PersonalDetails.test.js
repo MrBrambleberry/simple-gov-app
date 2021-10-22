@@ -2,13 +2,12 @@ import { SubjectDetails } from './PersonalDetailsRoutes'
 import { render, screen } from '@testing-library/react';
 import * as axios from 'axios';
 import { act } from 'react-dom/test-utils';
-import * as copy from './copy';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import * as subjectCopy from './copy';
+import each from 'jest-each';
 
 jest.mock('axios');
-
-const { heading, legend, firstNameLabel, lastNameLabel, ageLabel } = copy.default;
 
 const mockSubject = { firstName: "John", lastName: "Doe", age: 26 };
 const mockFetchSubject = results => {
@@ -17,18 +16,27 @@ const mockFetchSubject = results => {
     }));
 }
 
-const renderPage = async () => render(
+const subject = {
+    page: <SubjectDetails />,
+    expectedCopy: subjectCopy
+}
+
+const renderPage = async page => render(
     <Router>
         <Switch>
             <Route path="/">
-                <SubjectDetails />
+                {page}
             </Route>
         </Switch>
     </Router>);
 
-describe('PersonalDetails', () => {
+each([subject]).describe('PersonalDetails', personalDetails => {
+    const { page, expectedCopy } = personalDetails;
+    const { heading, legend, firstNameLabel, lastNameLabel, ageLabel } = expectedCopy.default;
+
     it('renders static content on the page', async () => {
-        await renderPage();
+
+        await renderPage(page);
 
         [
             heading,
@@ -42,7 +50,7 @@ describe('PersonalDetails', () => {
         mockFetchSubject(mockSubject);
 
         await act(async () => {
-            await renderPage();
+            await renderPage(page);
         });
 
         expect(screen.getByLabelText(firstNameLabel)).toHaveValue('John');
@@ -52,7 +60,7 @@ describe('PersonalDetails', () => {
 
     it('Posts data to our local service when we submit the form', async () => {
         await act(async () => {
-            await renderPage();
+            await renderPage(page);
         });
 
         await act(async () => {
@@ -74,7 +82,7 @@ describe('PersonalDetails', () => {
 
     it('Shows error messages and does not submit the data if the data input is invalid', async () => {
         await act(async () => {
-            await renderPage();
+            await renderPage(page);
         });
 
         await act(async () => {
@@ -87,10 +95,12 @@ describe('PersonalDetails', () => {
             userEvent.click(screen.getByTestId('submit-button'));
         });
 
+        const { firstName, lastName, age } = expectedCopy.errors;
+
         [
-            copy.errors.firstName.invalid,
-            copy.errors.lastName.invalid,
-            copy.errors.age.invalid
+            firstName.invalid,
+            lastName.invalid,
+            age.invalid
         ].forEach(content => {
             expect(screen.getAllByText(content).length).toBe(2);
         })
@@ -100,17 +110,19 @@ describe('PersonalDetails', () => {
 
     it('displays an appropriate error message if fields are left blank', async () => {
         await act(async () => {
-            await renderPage();
+            await renderPage(page);
         });
 
         await act(async () => {
             await userEvent.click(screen.getByTestId('submit-button'));
         });
 
+        const { firstName, lastName, age } = expectedCopy.errors;
+
         [
-            copy.errors.firstName.blank,
-            copy.errors.lastName.blank,
-            copy.errors.age.blank
+            firstName.blank,
+            lastName.blank,
+            age.blank
         ].forEach(content => {
             expect(screen.getAllByText(content).length).toBe(2);
         });
