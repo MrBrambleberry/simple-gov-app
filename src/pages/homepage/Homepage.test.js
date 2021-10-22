@@ -24,12 +24,18 @@ describe('When rendering the homepage', () => {
     </Router>);
 
   it('shows the expected static content', async () => {
-    const { heading, leadParagraph, insetText } = copy.default;
+    const { heading, leadParagraph, insetText, firstParagraph, secondParagraph, subjectHeading, subjectLinkText } = copy.default;
 
     await renderPage();
 
     [
-      heading, leadParagraph, insetText
+      heading,
+      leadParagraph,
+      insetText,
+      firstParagraph,
+      secondParagraph,
+      subjectHeading,
+      subjectLinkText
     ].forEach(content => {
       expect(screen.getByText(content)).toBeInTheDocument();
     });

@@ -1,5 +1,9 @@
 {
     "heading": "Welcome to your local government service",
     "leadParagraph": "Please complete every selection specified below and submit when ready",
-    "insetText": "Processing of your details can take upto 8 weeks"
+    "insetText": "Processing of your details can take upto 8 weeks",
+    "firstParagraph": "Once you've completed each section below you will be given the chance to review your responses before submitting them",
+    "secondParagraph": "You will be asked basic information about yourself and your parents. You can review and amend your answers before submitting them.",
+    "subjectHeading": "Your details:",
+    "subjectLinkText": "Your details page"
 }
