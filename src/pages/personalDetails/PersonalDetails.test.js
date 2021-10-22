@@ -9,16 +9,11 @@ import each from 'jest-each';
 
 jest.mock('axios');
 
-const mockSubject = { firstName: "John", lastName: "Doe", age: 26 };
-const mockFetchSubject = results => {
-    axios.get.mockImplementation(() => Promise.resolve({
-        data: results
-    }));
-}
-
 const subject = {
     page: <SubjectDetails />,
-    expectedCopy: subjectCopy
+    expectedCopy: subjectCopy,
+    expectedTargetURL: 'http://localhost:3004/subject',
+    exepctedPrepopulatedData: { firstName: "John", lastName: "Doe", age: '26' }
 }
 
 const renderPage = async page => render(
@@ -31,7 +26,7 @@ const renderPage = async page => render(
     </Router>);
 
 each([subject]).describe('PersonalDetails', personalDetails => {
-    const { page, expectedCopy } = personalDetails;
+    const { page, expectedCopy, expectedTargetURL, exepctedPrepopulatedData } = personalDetails;
     const { heading, legend, firstNameLabel, lastNameLabel, ageLabel } = expectedCopy.default;
 
     it('renders static content on the page', async () => {
@@ -47,15 +42,19 @@ each([subject]).describe('PersonalDetails', personalDetails => {
     });
 
     it('Prepopulates input fields with data if we already have subject data', async () => {
-        mockFetchSubject(mockSubject);
+        axios.get.mockImplementation(() => Promise.resolve({
+            data: exepctedPrepopulatedData
+        }));
 
         await act(async () => {
             await renderPage(page);
         });
 
-        expect(screen.getByLabelText(firstNameLabel)).toHaveValue('John');
-        expect(screen.getByLabelText(lastNameLabel)).toHaveValue('Doe');
-        expect(screen.getByLabelText(ageLabel)).toHaveValue('26');
+        const { firstName, lastName, age } = exepctedPrepopulatedData;
+
+        expect(screen.getByLabelText(firstNameLabel)).toHaveValue(firstName);
+        expect(screen.getByLabelText(lastNameLabel)).toHaveValue(lastName);
+        expect(screen.getByLabelText(ageLabel)).toHaveValue(age);
     });
 
     it('Posts data to our local service when we submit the form', async () => {
@@ -73,7 +72,7 @@ each([subject]).describe('PersonalDetails', personalDetails => {
             userEvent.click(screen.getByTestId('submit-button'));
         });
 
-        expect(axios.post).toBeCalledWith('http://localhost:3004/subject', {
+        expect(axios.post).toBeCalledWith(expectedTargetURL, {
             firstName: 'Francesca',
             lastName: 'Medina',
             age: '38'

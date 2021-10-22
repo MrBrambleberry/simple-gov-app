@@ -15,12 +15,12 @@ function PersonalDetails(props) {
     const [errors, setErrors] = useState([]);
     const history = useHistory();
 
-    const { copy } = props;
+    const { copy, targetURL } = props;
     const { heading, legend, firstNameLabel, lastNameLabel, ageLabel } = copy.default;
 
     useEffect(() => {
         const getPersonalDetails = async () => {
-            const res = await axios.get(`http://localhost:3004/subject`);
+            const res = await axios.get(targetURL);
 
             if (res) {
                 const { firstName, lastName, age } = res.data;
@@ -90,11 +90,7 @@ function PersonalDetails(props) {
             setAgeErrorText("");
             setErrors([]);
 
-            axios.post('http://localhost:3004/subject', {
-                firstName, lastName, age
-            });
-
-
+            axios.post(targetURL, { firstName, lastName, age });
             history.push('/');
         }
     }
