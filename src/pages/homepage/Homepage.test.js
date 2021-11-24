@@ -1,33 +1,39 @@
+import React from 'react';
+import { describe, expect, it } from '@jest/globals';
 import { render, screen } from '@testing-library/react';
 import { Homepage } from './Homepage';
 import * as copy from './copy';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 
 describe('When rendering the homepage', () => {
-
-  const renderPage = async () => render(
-    <Router>
-      <Switch>
-        <Route path="/my-details">
-          <>Mock my details page</>
-        </Route>
-        <Route exact path="/">
-          <Homepage />
-        </Route>
-      </Switch>
-    </Router>);
+  const renderPage = async () =>
+    render(
+      <Router>
+        <Switch>
+          <Route path="/my-details">
+            <>Mock my details page</>
+          </Route>
+          <Route exact path="/">
+            <Homepage />
+          </Route>
+        </Switch>
+      </Router>
+    );
 
   it('shows the expected static content', async () => {
-    const { heading, leadParagraph, insetText, firstParagraph, secondParagraph, subjectHeading, subjectLinkText } = copy.default;
+    const {
+      heading,
+      leadParagraph,
+      insetText,
+      firstParagraph,
+      secondParagraph,
+      subjectHeading,
+      subjectLinkText,
+    } = copy.default;
 
     await renderPage();
-
     [
       heading,
       leadParagraph,
@@ -35,8 +41,8 @@ describe('When rendering the homepage', () => {
       firstParagraph,
       secondParagraph,
       subjectHeading,
-      subjectLinkText
-    ].forEach(content => {
+      subjectLinkText,
+    ].forEach((content) => {
       expect(screen.getByText(content)).toBeInTheDocument();
     });
   });
