@@ -7,51 +7,45 @@ import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import * as subjectCopy from './copy';
-import each from 'jest-each';
+
+const { heading, legend, firstNameLabel, lastNameLabel, ageLabel } =
+  subjectCopy.default;
 
 jest.mock('axios');
 
-const subject = {
-  page: <SubjectDetails />,
-  expectedCopy: subjectCopy,
-  expectedTargetURL: 'http://localhost:3004/subject',
-  exepctedPrepopulatedData: { firstName: 'John', lastName: 'Doe', age: '26' },
-};
-
-const renderPage = async (page) =>
+const renderPage = async () =>
   render(
     <Router>
       <Switch>
-        <Route path="/">{page}</Route>
+        <Route path="/">
+          <SubjectDetails />
+        </Route>
       </Switch>
     </Router>
   );
 
-each([subject]).describe('PersonalDetails', (personalDetails) => {
-  const { page, expectedCopy, expectedTargetURL, exepctedPrepopulatedData } =
-    personalDetails;
-  const { heading, legend, firstNameLabel, lastNameLabel, ageLabel } =
-    expectedCopy.default;
-
+describe('PersonalDetails', () => {
   it('renders static content on the page', async () => {
-    await renderPage(page);
+    await renderPage();
     [heading, legend].forEach((content) => {
       expect(screen.getByText(content)).toBeInTheDocument();
     });
   });
 
   it('Prepopulates input fields with data if we already have subject data', async () => {
+    const prepopulatedData = { firstName: 'John', lastName: 'Doe', age: '26' };
+
     axios.get.mockImplementation(() =>
       Promise.resolve({
-        data: exepctedPrepopulatedData,
+        data: prepopulatedData,
       })
     );
 
     await act(async () => {
-      await renderPage(page);
+      await renderPage();
     });
 
-    const { firstName, lastName, age } = exepctedPrepopulatedData;
+    const { firstName, lastName, age } = prepopulatedData;
 
     expect(screen.getByLabelText(firstNameLabel)).toHaveValue(firstName);
     expect(screen.getByLabelText(lastNameLabel)).toHaveValue(lastName);
@@ -60,7 +54,7 @@ each([subject]).describe('PersonalDetails', (personalDetails) => {
 
   it('Posts data to our local service when we submit the form', async () => {
     await act(async () => {
-      await renderPage(page);
+      await renderPage();
     });
 
     await act(async () => {
@@ -73,7 +67,7 @@ each([subject]).describe('PersonalDetails', (personalDetails) => {
       userEvent.click(screen.getByTestId('submit-button'));
     });
 
-    expect(axios.post).toBeCalledWith(expectedTargetURL, {
+    expect(axios.post).toBeCalledWith('http://localhost:3004/subject', {
       firstName: 'Francesca',
       lastName: 'Medina',
       age: '38',
@@ -82,7 +76,7 @@ each([subject]).describe('PersonalDetails', (personalDetails) => {
 
   it('Shows error messages and does not submit the data if the data input is invalid', async () => {
     await act(async () => {
-      await renderPage(page);
+      await renderPage();
     });
 
     await act(async () => {
@@ -95,7 +89,7 @@ each([subject]).describe('PersonalDetails', (personalDetails) => {
       userEvent.click(screen.getByTestId('submit-button'));
     });
 
-    const { firstName, lastName, age } = expectedCopy.errors;
+    const { firstName, lastName, age } = subjectCopy.errors;
 
     [firstName.invalid, lastName.invalid, age.invalid].forEach((content) => {
       expect(screen.getAllByText(content).length).toBe(2);
@@ -106,14 +100,14 @@ each([subject]).describe('PersonalDetails', (personalDetails) => {
 
   it('displays an appropriate error message if fields are left blank', async () => {
     await act(async () => {
-      await renderPage(page);
+      await renderPage();
     });
 
     await act(async () => {
       await userEvent.click(screen.getByTestId('submit-button'));
     });
 
-    const { firstName, lastName, age } = expectedCopy.errors;
+    const { firstName, lastName, age } = subjectCopy.errors;
 
     [firstName.blank, lastName.blank, age.blank].forEach((content) => {
       expect(screen.getAllByText(content).length).toBe(2);
