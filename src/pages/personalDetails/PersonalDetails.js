@@ -130,7 +130,7 @@ function PersonalDetails(props) {
             setter={setAge}
           />
           <div className="form-group">
-            <Input data-testid="submit-button" type="submit" />
+            <Input type="submit" value="Submit" />
           </div>
         </Fieldset>
       </form>

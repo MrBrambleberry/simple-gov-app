@@ -64,7 +64,7 @@ describe('PersonalDetails', () => {
     });
 
     await act(async () => {
-      userEvent.click(screen.getByTestId('submit-button'));
+      userEvent.click(screen.getByText('Submit'));
     });
 
     expect(axios.post).toBeCalledWith('http://localhost:3004/subject', {
@@ -86,7 +86,7 @@ describe('PersonalDetails', () => {
     });
 
     await act(async () => {
-      userEvent.click(screen.getByTestId('submit-button'));
+      userEvent.click(screen.getByText('Submit'));
     });
 
     const { firstName, lastName, age } = subjectCopy.errors;
@@ -104,7 +104,7 @@ describe('PersonalDetails', () => {
     });
 
     await act(async () => {
-      await userEvent.click(screen.getByTestId('submit-button'));
+      await userEvent.click(screen.getByText('Submit'));
     });
 
     const { firstName, lastName, age } = subjectCopy.errors;
