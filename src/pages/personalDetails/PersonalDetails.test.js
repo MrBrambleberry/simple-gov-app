@@ -1,15 +1,15 @@
 import React from 'react';
 import { expect, it, jest } from '@jest/globals';
-import { SubjectDetails } from './PersonalDetailsRoutes';
+import * as copy from './copy';
+import { PersonalDetails } from './PersonalDetails';
 import { render, screen } from '@testing-library/react';
 import * as axios from 'axios';
 import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import * as subjectCopy from './copy';
 
 const { heading, legend, firstNameLabel, lastNameLabel, ageLabel } =
-  subjectCopy.default;
+  copy.default;
 
 jest.mock('axios');
 
@@ -18,7 +18,10 @@ const renderPage = async () =>
     <Router>
       <Switch>
         <Route path="/">
-          <SubjectDetails />
+          <PersonalDetails
+            copy={copy}
+            targetURL={'http://localhost:3004/subject'}
+          />
         </Route>
       </Switch>
     </Router>
@@ -89,7 +92,7 @@ describe('PersonalDetails', () => {
       userEvent.click(screen.getByText('Submit'));
     });
 
-    const { firstName, lastName, age } = subjectCopy.errors;
+    const { firstName, lastName, age } = copy.errors;
 
     [firstName.invalid, lastName.invalid, age.invalid].forEach((content) => {
       expect(screen.getAllByText(content).length).toBe(2);
@@ -107,7 +110,7 @@ describe('PersonalDetails', () => {
       await userEvent.click(screen.getByText('Submit'));
     });
 
-    const { firstName, lastName, age } = subjectCopy.errors;
+    const { firstName, lastName, age } = copy.errors;
 
     [firstName.blank, lastName.blank, age.blank].forEach((content) => {
       expect(screen.getAllByText(content).length).toBe(2);
