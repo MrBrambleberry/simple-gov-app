@@ -17,7 +17,12 @@
   "extends": ["prettier", "eslint:recommended", "plugin:react/recommended"],
   "rules": {
     "semi": [2, "always"],
-    "prettier/prettier": "error",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
     "react/prop-types": 0
   },
   "settings": {
