@@ -6,18 +6,30 @@ import { render, screen } from '@testing-library/react';
 import * as axios from 'axios';
 import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Router, Switch, Route } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
 const { heading, legend, firstNameLabel, lastNameLabel, ageLabel } =
   copy.default;
 
 jest.mock('axios');
 
-const renderPage = async () =>
+const MockHomePage = () => (
+  <>
+    <h1>Home page</h1>
+  </>
+);
+
+const renderPage = () => {
+  const history = createMemoryHistory();
+  history.push('/my-details');
   render(
-    <Router>
+    <Router history={history}>
       <Switch>
-        <Route path="/">
+        <Route exact path="/homepage">
+          <MockHomePage />
+        </Route>
+        <Route path="/my-details">
           <PersonalDetails
             copy={copy}
             targetURL={'http://localhost:3004/subject'}
@@ -26,6 +38,7 @@ const renderPage = async () =>
       </Switch>
     </Router>
   );
+};
 
 describe('PersonalDetails', () => {
   it('renders static content on the page', async () => {
@@ -75,6 +88,8 @@ describe('PersonalDetails', () => {
       lastName: 'Medina',
       age: '38',
     });
+
+    expect(screen.getByText('Home page')).toBeInTheDocument();
   });
 
   it('Shows error messages and does not submit the data if the data input is invalid', async () => {
@@ -99,6 +114,7 @@ describe('PersonalDetails', () => {
     });
 
     expect(axios.post).not.toBeCalled();
+    expect(screen.queryByText('Home page')).not.toBeInTheDocument();
   });
 
   it('displays an appropriate error message if fields are left blank', async () => {
@@ -117,5 +133,6 @@ describe('PersonalDetails', () => {
     });
 
     expect(axios.post).not.toBeCalled();
+    expect(screen.queryByText('Home page')).not.toBeInTheDocument();
   });
 });

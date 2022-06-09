@@ -99,7 +99,7 @@ function PersonalDetails(props) {
       setErrors([]);
 
       axios.post(targetURL, { firstName, lastName, age });
-      history.push('/');
+      history.push('/homepage');
     }
   };
 
