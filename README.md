@@ -2,6 +2,13 @@
 
 A basic application styled using GDS components
 
+## Dependencies
+
+[NodeJS](https://nodejs.org/en/)
+
+[JSON Server](https://github.com/typicode/json-server)
+
+
 ## Run tests
 
 `npm test` or `npm t`
