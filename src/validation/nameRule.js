@@ -1,5 +1,5 @@
 import { string } from 'yup';
-import * as copy from '../pages/personalDetails/copy.json';
+import copy from '../pages/personalDetails/copy';
 
 const { blank: firstNameBlank, invalid:firstNameInvalid } = copy.errors.firstName;
 const { blank: lastNameBlank, invalid:lastNameInvalid } = copy.errors.lastName;
