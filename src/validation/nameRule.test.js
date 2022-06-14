@@ -1,9 +1,15 @@
-import { nameRule } from './nameRule';
+import { firstNameRule, lastNameRule } from './nameRule';
 import { object } from 'yup';
 import * as copy from '../pages/personalDetails/copy.json';
 
-describe('When testing a first name', () => {
-  const {blank, invalid} = copy.errors.firstName;
+const names = [
+  ['firstName', firstNameRule, copy.errors.firstName ],
+  ['lastName', lastNameRule, copy.errors.lastName ],
+];
+
+
+describe.each(names)('When testing a %s', (name, rule, errorCopy) => {
+  const {blank, invalid} = errorCopy;
   
   const params = [
     [undefined, blank], 
@@ -12,16 +18,16 @@ describe('When testing a first name', () => {
   ];
 
   it.each(params)(
-    'throw an error if given the value of "%s"',
+    'throws an error if given the value of "%s"',
     async ( invalidInput, expectedErrorMessage ) => {
       let actualErrors;
 
       const validator = object({
-        firstName: nameRule,
+        [name]: rule,
       });
 
       try {
-        await validator.validate({ firstName: invalidInput });
+        await validator.validate({ [name]: invalidInput });
       } catch (e) {
         actualErrors = e.errors;
       }
@@ -32,10 +38,10 @@ describe('When testing a first name', () => {
 
   it.each(['John','Jane'])('should accept valid input: "%s"',async (validName) =>{
     const validator = object({
-      firstName: nameRule,
+      [name]: rule,
     });
     
-    const result = await validator.isValid({ firstName: validName })
+    const result = await validator.isValid({ [name]: validName })
     expect(result).toBe(true);
-  })
+  });
 });
