@@ -3,12 +3,17 @@ import { object } from 'yup';
 import * as copy from '../pages/personalDetails/copy.json';
 
 describe('When testing a first name', () => {
-  const params = [[{}], [{ firstName: undefined }], [{ firstName: '' }]];
+  const {blank, invalid} = copy.errors.firstName;
+  
+  const params = [
+    [undefined, blank], 
+    ['', blank],
+    ['123', invalid],
+  ];
 
   it.each(params)(
     'throw an error if given the value of "%s"',
-    async (parameter) => {
-      const expectedErrors = [copy.errors.firstName.blank];
+    async ( invalidInput, expectedErrorMessage ) => {
       let actualErrors;
 
       const validator = object({
@@ -16,33 +21,16 @@ describe('When testing a first name', () => {
       });
 
       try {
-        await validator.validate(parameter);
+        await validator.validate({ firstName: invalidInput });
       } catch (e) {
         actualErrors = e.errors;
       }
 
-      expect(actualErrors).toStrictEqual(expectedErrors);
+      expect(actualErrors).toStrictEqual([expectedErrorMessage]);
     }
   );
 
-  it('should not allow non latin characters', async () => {
-    const expectedErrors = [copy.errors.firstName.invalid];
-    let actualErrors;
-
-    const validator = object({
-      firstName: nameRule,
-    });
-
-    try {
-      await validator.validate({ firstName: '123' });
-    } catch (e) {
-      actualErrors = e.errors;
-    }
-
-    expect(actualErrors).toStrictEqual(expectedErrors);
-  });
-
-  it.each([['John'],['Jane']])('should accept valid input: "%s"',async (validName) =>{
+  it.each(['John','Jane'])('should accept valid input: "%s"',async (validName) =>{
     const validator = object({
       firstName: nameRule,
     });

@@ -29,4 +29,11 @@ describe('When validating an age',()=>{
 
       expect(actualErrors).toStrictEqual([expectedErrorMessage]);
     });
+
+    it.each([16, 30, 50])('accepts an age that is sixteen or over: "%s"',async ( validInput )=>{
+        const validator = object({
+            age: ageRule,
+        });
+        expect(await validator.isValid({age: validInput})).toBe(true);  
+    })
 })
