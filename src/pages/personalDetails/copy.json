@@ -15,6 +15,7 @@
         },
         "age": {
             "blank" : "Please enter your age",
+            "min" : "You must be at least sixteen years of age to use this service",
             "invalid": "Your age provided must only use numeric characters"
         }
     }
